@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE - India Garden Planner & Frost Date Guide</title>
+  <meta name="description" content="Discover what to plant this week across India based on your local frost dates, winter temperatures, and agro-climatic zones. Powered by Gemini AI.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23143D32'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SITE HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#home" class="brand-logo" id="brandLogo">
+        <div class="brand-icon">
+          <!-- Botanical Leaf Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3 4.3 0 8.5-4.4 9-12zm-3.66 4.79c-.64 2.12-2.31 3.96-4.52 4.93 1.34-2.28 3.09-3.95 4.52-4.93zM12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.98.97 4.29L12 2z" opacity="0.3"/>
+            <path d="M21 3c-1.5 0-7 1.5-10 6.5C8 14.5 9 19 9 19s4.5 1 9.5-2c5-3 6.5-8.5 6.5-10 0-.5-.5-1-1-1zm-4 10.5c-2.5 1.5-4.8 1.1-5.5.9.8-1.5 2.2-3.8 4.5-5.4 2.3-1.6 3.5-1.9 4-.7.3 1.2-.5 3.7-3 5.2z"/>
+          </svg>
+        </div>
+        <span>CARE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#tips">Tips & Tricks</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="btn-header-call" id="btnHeaderCall" onclick="openContactModal()">
+        <svg viewBox="0 0 24 24">
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+        <span>Call Us</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== -->
+  <section class="hero-section" id="home">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge-pill" id="heroRegionBadge">
+          <span class="dot"></span> Delhi NCR · Peak Rabi Sowing Week
+        </div>
+        <h1 class="hero-title">We take care your beautiful garden</h1>
+        <p class="hero-subtitle" id="heroStatusText">
+          Our top service providers will connect to provide free guidance and quotations on Gardening Services. Know exactly what to plant this week based on India's local frost and seasonal transitions.
+        </p>
+        <div class="hero-actions">
+          <a href="#collection" class="btn-primary" id="btnExploreHero">
+            Explore our service
+          </a>
+          <button class="btn-secondary" onclick="openAiModal()">
+            ✨ Ask AI Specialist
+          </button>
+        </div>
+        <div class="hero-indicator">2/3</div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <img src="assets/hero_monstera.jpg" alt="Monstera Deliciosa Botanical Leaf" class="hero-monstera-img" id="heroMonsteraImg">
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE INDIA FROST & CLIMATE SELECTOR BAR
+       ========================================================================== -->
+  <div class="container frost-bar-section">
+    <div class="frost-bar-card">
+      <div class="frost-field-group">
+        <label for="regionSelect">Select Your Region / City (India)</label>
+        <div class="frost-select-wrap">
+          <select id="regionSelect" class="frost-select">
+            <option value="delhi" selected>Delhi NCR (Northern Plains)</option>
+            <option value="shimla">Shimla & HP Hills (Cold Temperate)</option>
+            <option value="chandigarh">Chandigarh & Punjab / Haryana</option>
+            <option value="lucknow">Lucknow & UP Plains</option>
+            <option value="jaipur">Jaipur & Rajasthan (North Semi-Arid)</option>
+            <option value="bengaluru">Bengaluru & Karnataka Plateau (Frost-Free)</option>
+            <option value="mumbai">Mumbai & Konkan Coast (Tropical Frost-Free)</option>
+            <option value="kolkata">Kolkata & Eastern Plains (Mild Winter)</option>
+            <option value="pune">Pune & Western Maharashtra</option>
+          </select>
+          <div class="frost-select-arrow">▼</div>
+        </div>
+      </div>
+
+      <div class="frost-stat-box">
+        <span class="stat-label">First Frost / Cold Snap</span>
+        <span class="stat-value" id="frostVal">Dec 20</span>
+        <span class="stat-sub" id="frostSub">First cold snap in ~75 days</span>
+      </div>
+
+      <div class="frost-stat-box">
+        <span class="stat-label">Winter Min Temp</span>
+        <span class="stat-value" id="tempVal">3°C - 5°C</span>
+        <span class="stat-sub" id="tempSub">Peak Rabi Sowing Week</span>
+      </div>
+
+      <div>
+        <button class="btn-primary" style="padding:12px 24px; font-size:13.5px;" onclick="openAiModal()">
+          Plan This Week
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SERVICES WE PROVIDE SECTION
+       ========================================================================== -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <h2 class="section-title">Services We Provide</h2>
+      <div class="services-grid">
+        <!-- Landscaping -->
+        <div class="service-card">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v3h2v-3h3l-4-4-4 4h3zm0-8h2v2h-2V7z"/>
+            </svg>
+          </div>
+          <h3 class="service-card-title">Landscaping</h3>
+          <p class="service-card-desc">Winter bed preparation, soil amending with vermicompost, and mapping sunlight paths for terrace gardens.</p>
+        </div>
+
+        <!-- Plants Planting -->
+        <div class="service-card">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3a9 9 0 0 0-9 9c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm0 2c1.78 0 3.42.66 4.68 1.76L12 11.45V5zm-2 0v6.45L5.32 6.76C6.58 5.66 8.22 5 10 5zm-5 7c0-1.78.66-3.42 1.76-4.68L11.45 12H5zm14 0h-6.45l4.69-4.68A6.974 6.974 0 0 1 19 12z"/>
+            </svg>
+          </div>
+          <h3 class="service-card-title">Plants Planting</h3>
+          <p class="service-card-desc">Weekly sowing calculator matching local Indian frost dates so you never plant too late or too early.</p>
+        </div>
+
+        <!-- Water Fountain -->
+        <div class="service-card">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+          </div>
+          <h3 class="service-card-title">Water Fountain</h3>
+          <p class="service-card-desc">Automated drip systems, terrace humidity management, and frost-prevention morning irrigation timing.</p>
+        </div>
+
+        <!-- Garden Care -->
+        <div class="service-card">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h3 class="service-card-title">Garden Care</h3>
+          <p class="service-card-desc">Agro-netting frost protection, organic neem spray pest control, and seasonal root-insulating mulching.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SPLIT SECTION: EXPERTS WHO HELP
+       ========================================================================== -->
+  <section class="experts-section" id="about">
+    <div class="container experts-grid">
+      <div class="experts-image-wrap">
+        <img src="assets/pilea_plant.jpg" alt="Pilea Peperomioides in Ceramic Pot" class="experts-pilea-img">
+        <div class="experts-teal-badge">
+          The services offered by us are provided by a team of experienced professionals, who use latest equipment and superior grade of materials.
+        </div>
+      </div>
+
+      <div class="experts-content">
+        <h2 class="experts-title">We have experts who help you with your gardening</h2>
+        
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="tabMission">Our Mission</button>
+          <button class="tab-btn" data-tab="tabVision">Our Vision</button>
+          <button class="tab-btn" data-tab="tabFrost">Frost Advisory</button>
+        </div>
+
+        <div id="tabMission" class="tab-content-panel active">
+          <p class="tab-content-desc">
+            Empowering every Indian home gardener—from urban balcony growers in Delhi and Bengaluru to highland growers in Himachal—with precision micro-climate and frost date intelligence to produce abundant organic greens.
+          </p>
+          <ul class="experts-features-list">
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Localized frost & temperature predictions across all Indian zones
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Weekly actionable sowing lists for fast-harvest Rabi crops
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              AI-assisted 24/7 horticultural advice powered by Gemini
+            </li>
+          </ul>
+        </div>
+
+        <div id="tabVision" class="tab-content-panel">
+          <p class="tab-content-desc">
+            To build green, thriving rooftop and balcony ecosystems across Indian cities that cool urban heat islands and supply fresh, chemical-free herbs and veggies to families year-round.
+          </p>
+          <ul class="experts-features-list">
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Sustainable container potting mixes using organic Indian compost
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Zero pesticide organic methods with traditional neem repellents
+            </li>
+          </ul>
+        </div>
+
+        <div id="tabFrost" class="tab-content-panel">
+          <p class="tab-content-desc">
+            North Indian plains experience cold waves from late December to mid-January with night temperatures hitting 3°C to 5°C. Sowing your cool-season crops in early October ensures strong root development before cold weather strikes.
+          </p>
+          <ul class="experts-features-list">
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Direct sow carrots, radish, spinach & peas this week
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Keep delicate tropicals like Monstera in bright sheltered spots
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       EXCLUSIVE PLANT COLLECTION & THIS WEEK'S SOWING PLANNER
+       ========================================================================== -->
+  <section class="collection-section" id="collection">
+    <div class="container">
+      <div class="collection-header-row">
+        <div class="collection-header-left">
+          <h2>See our exclusive plant collection</h2>
+          <div class="plant-filters">
+            <button class="filter-chip active" data-filter="all">All Plants</button>
+            <button class="filter-chip" data-filter="veggies">Vegetables (Sow This Week)</button>
+            <button class="filter-chip" data-filter="herbs">Herbs & Greens</button>
+            <button class="filter-chip" data-filter="flowers">Winter Flowers</button>
+            <button class="filter-chip" data-filter="indoor">Indoor Ornamental Plant</button>
+            <button class="filter-chip" data-filter="cactus">Cactus & Succulents</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="padding:12px 28px; font-size:13.5px;" onclick="openAiModal()">
+          See Our Collection
+        </button>
+      </div>
+
+      <div class="collection-grid" id="collectionGrid">
+        <!-- Dynamically rendered via app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SPLIT SECTION 2: WE MAKE YOUR HOUSE GARDEN BEAUTIFUL
+       ========================================================================== -->
+  <section class="house-garden-section">
+    <div class="container house-garden-grid">
+      <div class="house-garden-content">
+        <h2 class="house-garden-title">We make your house garden beautiful</h2>
+        <p class="house-garden-desc">
+          We have a range of indoor garden packages designed for Indian urban homes. From balcony vegetable gardens to rooftop terrace setups and air-purifying foliage, our team provides complete personalized guidance.
+        </p>
+
+        <div class="house-perks">
+          <div class="perk-item">
+            <div class="perk-icon-wrap">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+              </svg>
+            </div>
+            <div class="perk-text">Guaranteed quality services</div>
+          </div>
+
+          <div class="perk-item">
+            <div class="perk-icon-wrap">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              </svg>
+            </div>
+            <div class="perk-text">Dedicated Support Team</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="house-garden-image-wrap">
+        <img src="assets/gardener_photo.jpg" alt="Gardener Caring for Indoor Plants" class="house-garden-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OUR HAPPY CLIENTS (TESTIMONIALS)
+       ========================================================================== -->
+  <section class="testimonials-section">
+    <div class="container testimonials-inner">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">
+        “The glory of gardening: hands in the dirt, head in the sun, heart with nature. To nurture a garden is to feed not just on the body, but the soul.”
+      </p>
+      <div class="testimonial-author">Aarav Sharma</div>
+      <div class="testimonial-location">Balcony Gardener, Delhi NCR</div>
+    </div>
+    <img src="assets/hero_monstera.jpg" alt="Monstera Accent" class="testimonial-monstera-accent">
+  </section>
+
+  <!-- ==========================================================================
+       GARDENING TIPS & TRICKS
+       ========================================================================== -->
+  <section class="tips-section" id="tips">
+    <div class="container">
+      <div class="tips-header-wrap">
+        <h2 class="section-title" style="margin-bottom:0;">Gardening tips & tricks</h2>
+      </div>
+
+      <div class="tips-grid">
+        <!-- Tip 1 -->
+        <div class="tip-card">
+          <div class="tip-card-img-wrap">
+            <img src="assets/tip_frost.jpg" alt="Rooftop garden winter tips" class="tip-card-img" loading="lazy">
+          </div>
+          <div class="tip-card-body">
+            <span class="tip-category">Rooftop Gardening</span>
+            <h3 class="tip-title">5 Excellent tips on how to take care of your rooftop garden during winter frost</h3>
+            <a href="javascript:void(0)" class="tip-link" onclick="openTipModal('tip1')">
+              <span>View article</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tip 2 -->
+        <div class="tip-card">
+          <div class="tip-card-img-wrap">
+            <img src="assets/tip_veggies.jpg" alt="Indoor air purifying plants" class="tip-card-img" loading="lazy">
+          </div>
+          <div class="tip-card-body">
+            <span class="tip-category">Indoor Plants</span>
+            <h3 class="tip-title">8 rare indoor plants that will make your house lively & air clean</h3>
+            <a href="javascript:void(0)" class="tip-link" onclick="openTipModal('tip2')">
+              <span>View article</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tip 3 -->
+        <div class="tip-card">
+          <div class="tip-card-img-wrap">
+            <img src="assets/tip_balcony.jpg" alt="October winter vegetable calendar" class="tip-card-img" loading="lazy">
+          </div>
+          <div class="tip-card-body">
+            <span class="tip-category">Seasonal Guide</span>
+            <h3 class="tip-title">Sowing winter vegetables in October: Full calendar for Indian climatic zones</h3>
+            <a href="javascript:void(0)" class="tip-link" onclick="openTipModal('tip3')">
+              <span>View article</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       AI CONSULTATION & CONTACT BANNER
+       "Want to have a friendly conversation with us?"
+       ========================================================================== -->
+  <section class="conversation-section" id="contact">
+    <div class="container">
+      <div class="conversation-card">
+        <div class="conversation-media">
+          <img src="assets/gardener_photo.jpg" alt="Botanical Conversation">
+        </div>
+        <div class="conversation-content">
+          <h2 class="conversation-title">Want to have a friendly conversation with us?</h2>
+          <p class="conversation-desc">
+            Get instant expert guidance on winter sowing, container soil blends, and frost dates tailored to your Indian city. Our AI Horticultural Specialist is ready to assist you.
+          </p>
+          <div class="conversation-buttons">
+            <button class="btn-primary" onclick="openContactModal()">
+              Call Us
+            </button>
+            <button class="btn-secondary" onclick="openAiModal()">
+              ✨ Ask AI Garden Specialist
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-brand">
+        <div class="brand-icon" style="width:24px; height:24px;">
+          <svg viewBox="0 0 24 24"><path d="M21 3c-1.5 0-7 1.5-10 6.5C8 14.5 9 19 9 19s4.5 1 9.5-2c5-3 6.5-8.5 6.5-10 0-.5-.5-1-1-1z"/></svg>
+        </div>
+        <span>CARE</span>
+      </div>
+
+      <p class="footer-address">
+        Indian Horticultural & Climate Center · MG Road, Indiranagar, Bengaluru & New Delhi, India
+      </p>
+      <p class="footer-contact">
+        support@caregardening.in
+      </p>
+
+      <div class="footer-socials">
+        <a href="#contact" class="social-circle" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#contact" class="social-circle" aria-label="Twitter">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </a>
+        <a href="#contact" class="social-circle" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2"/></svg>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        © 2026 CARE Garden Planner. All rights reserved. Designed for Indian home gardeners.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       AI GARDEN SPECIALIST MODAL (Powered by Gemini API)
+       ========================================================================== -->
+  <div class="modal-overlay" id="aiModal">
+    <div class="modal-box" style="max-width:680px;">
+      <div class="modal-header">
+        <h3>✨ CARE AI Garden Specialist</h3>
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="chat-prompt-chips">
+          <span class="chat-chip" data-prompt="What are the top 4 vegetables to sow this week in Delhi NCR?">
+            🌱 What to sow this week in Delhi?
+          </span>
+          <span class="chat-chip" data-prompt="How should I prepare my terrace pots for North India winter cold snaps?">
+            ❄️ Winter frost defense tips
+          </span>
+          <span class="chat-chip" data-prompt="Can I grow spinach and carrots together in balcony containers?">
+            🥕 Balcony container companion planting
+          </span>
+          <span class="chat-chip" data-prompt="What should I plant this week in Bangalore balcony?">
+            🌿 Bengaluru planting guide
+          </span>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot">
+            Namaste! I am your AI Garden Specialist at CARE. Based on your current frost dates and climate across India, ask me anything about what to sow this week, soil preparation, or cold snap protection!
+          </div>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="chatInput" class="chat-input" placeholder="Ask what to plant this week or about frost dates...">
+          <button id="chatSendBtn" class="chat-send-btn">
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PLANT DETAILS & CARE MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="plantModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="plantModalTitle">Plant Details</h3>
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body" id="plantModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       TIPS ARTICLE MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="tipModal">
+    <div class="modal-box" style="max-width:700px;">
+      <div class="modal-header">
+        <h3 id="tipModalTitle">Gardening Article</h3>
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body" id="tipModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       CONTACT & HELPLINE MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Connect With Our Gardening Team</h3>
+        <button class="modal-close-btn" onclick="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align:center; padding:10px 0 20px;">
+          <div style="font-size:36px; margin-bottom:12px;">✉️</div>
+          <h4 style="font-size:20px; font-weight:800; color:var(--color-forest); margin-bottom:6px;">
+            support@caregardening.in
+          </h4>
+          <p style="font-size:14px; color:var(--color-text-body); margin-bottom:20px;">
+            Monday - Saturday: 8:00 AM – 7:00 PM IST<br>Free consultation for Indian rooftop & balcony gardeners.
+          </p>
+          <div style="background:var(--bg-page); border:1px solid var(--border-light); border-radius:12px; padding:18px; text-align:left; font-size:13.5px; line-height:1.6;">
+            <strong>Immediate Service Areas:</strong>
+            <ul style="margin-left:18px; margin-top:6px;">
+              <li>Delhi NCR, Noida, Gurgaon, Faridabad</li>
+              <li>Bengaluru (Indiranagar, Whitefield, Koramangala)</li>
+              <li>Mumbai, Pune, Chandigarh, Jaipur, Lucknow</li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="closeAllModals()">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
